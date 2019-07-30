@@ -1,0 +1,29 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:lts
+    environment:
+      DOCKER_IMAGE: docker.pkg.github.com/dialogs/dialog-grpc-web-gateway/dialog-grpc-web-gateway
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run build
+      - setup_remote_docker
+      - run: docker build -t $DOCKER_IMAGE .
+      - run: docker tag $DOCKER_IMAGE $DOCKER_IMAGE:latest
+      - run: docker tag $DOCKER_IMAGE $DOCKER_IMAGE:$CIRCLE_BUILD_NUM
+      - run: echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin docker.pkg.github.com
+      - run: docker push $DOCKER_IMAGE
+
+workflows:
+  version: 2
+  test-build:
+    jobs:
+      - build:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
