@@ -8,7 +8,6 @@ jobs:
     steps:
       - checkout
       - run: npm ci
-      - run: npm run build
       - setup_remote_docker
       - run: docker build -t $DOCKER_IMAGE .
       - run: docker tag $DOCKER_IMAGE $DOCKER_IMAGE:latest
