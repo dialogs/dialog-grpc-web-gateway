@@ -4,7 +4,8 @@ jobs:
     docker:
       - image: circleci/node:lts
     environment:
-      DOCKER_IMAGE: docker.pkg.github.com/dialogs/dialog-grpc-web-gateway/dialog-grpc-web-gateway
+      # DOCKER_IMAGE: docker.pkg.github.com/dialogs/dialog-grpc-web-gateway/dialog-grpc-web-gateway
+      DOCKER_IMAGE: quay.io/dlgim/dialog-grpc-web-gateway
     steps:
       - checkout
       - run: npm ci
