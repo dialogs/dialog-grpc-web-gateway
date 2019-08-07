@@ -12,7 +12,7 @@
   },
   "author": "Nikita Gusakov <nkt@dlg.im>",
   "dependencies": {
-    "@dlghq/dialog-api": "0.7.0",
+    "@dlghq/dialog-api": "0.10.1",
     "@dlghq/grpc-web-gateway": "1.0.0-beta.32",
     "body-parser": "1.18.3",
     "cors": "2.8.5",
