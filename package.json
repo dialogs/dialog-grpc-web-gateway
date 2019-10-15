@@ -1,7 +1,7 @@
 {
   "name": "@dlghq/dialog-grpc-gateway",
   "private": true,
-  "version": "2.0.0-beta.25",
+  "version": "2.0.0-beta.26",
   "description": "Dialog API gRPC Gateway",
   "scripts": {
     "start": "node src/index.js",
@@ -13,7 +13,7 @@
   "author": "Nikita Gusakov <nkt@dlg.im>",
   "dependencies": {
     "@dlghq/dialog-api": "1.7.0",
-    "@dlghq/grpc-web-gateway": "1.0.0-alpha.0",
+    "@dlghq/grpc-web-gateway": "1.0.0-beta.38",
     "body-parser": "1.19.0",
     "cors": "2.8.5",
     "dotenv": "6.0.0",
