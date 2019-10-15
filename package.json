@@ -12,14 +12,14 @@
   },
   "author": "Nikita Gusakov <nkt@dlg.im>",
   "dependencies": {
-    "@dlghq/dialog-api": "0.10.1",
+    "@dlghq/dialog-api": "1.7.0",
     "@dlghq/grpc-web-gateway": "1.0.0-alpha.0",
-    "body-parser": "1.18.3",
+    "body-parser": "1.19.0",
     "cors": "2.8.5",
     "dotenv": "6.0.0",
-    "express": "4.16.4"
+    "express": "4.17.1"
   },
   "devDependencies": {
-    "nodemon": "1.18.9"
+    "nodemon": "1.19.3"
   }
 }
