@@ -16,7 +16,7 @@ RUN rm -rf node_modules && \
     npm config set strict-ssl false && \
     npm config set $NPM_REGISTRY/:_authToken $NPM_TOKEN && \
     npm cache clean --force && \
-    npm install -f
+    npm install
     
 RUN chmod 777 /opt/dialog-grpc-gateway/node_modules/@dlghq/dialog-api/js/api.proto
 
