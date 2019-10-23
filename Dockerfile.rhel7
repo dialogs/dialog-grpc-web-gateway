@@ -1,0 +1,24 @@
+ARG DOCKER_SOURCE_REGISTRY=10.36.131.149:5000
+
+FROM ${DOCKER_SOURCE_REGISTRY}/rhel7-minimal-node
+
+ARG NPM_TOKEN
+ARG NPM_REGISTRY
+
+ENV NODE_ENV=production
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+WORKDIR /opt/dialog-grpc-gateway
+
+COPY src/ src/
+COPY package.json package.json
+
+RUN rm -rf node_modules && \
+    npm config set strict-ssl false && \
+    npm config set $NPM_REGISTRY/:_authToken $NPM_TOKEN && \
+    npm cache clean --force && \
+    npm install -f
+    
+RUN chmod 777 /opt/dialog-grpc-gateway/node_modules/@dlghq/dialog-api/js/api.proto
+
+
+ENTRYPOINT ["node", "src/index.js"]
