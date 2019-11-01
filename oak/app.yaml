@@ -7,6 +7,24 @@ services:
         API_HOST: ${this.egress.plat-auth-service.grpc-api.host}:${this.egress.plat-auth-service.grpc-api.port}
         PORT: ${this.ingress.http-api.port}
         CORS_ORIGIN: 'true'
+      shell: >-
+        MEM=$(( $(cat /sys/fs/cgroup/memory/memory.limit_in_bytes) / 104857600 * 75 ));
+        exec ./node/bin/node --max-old-space-size $MEM src/index.js
+      resources:
+        minimal:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 250m
+            memory: 64Mi
+        normal:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 1
+            memory: 512Mi
     ingress:
       http-api:
         port: 3000
