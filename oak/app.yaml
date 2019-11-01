@@ -39,5 +39,5 @@ services:
                 cors_origin: https://${project.endpoints.web-app}
                 redirect_to: /
                 proxy_buffering: off
-  egress:
-    plat-auth-service:
+    egress:
+      plat-auth-service:
