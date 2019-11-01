@@ -22,5 +22,6 @@ RUN npm config set strict-ssl false && \
     
 RUN chmod 777 node_modules/@dlghq/dialog-api/js/api.proto
 
+USER 1001
 
 ENTRYPOINT ["/opt/dialog-grpc-gateway/node/bin/node", "src/index.js"]
