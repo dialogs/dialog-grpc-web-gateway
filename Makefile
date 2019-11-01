@@ -51,6 +51,9 @@ endif
 clean: docker-clean
 	@echo \*\*\* [$@] Not implemented
 
+test:
+	@echo \*\*\* [$@] Not implemented
+
 
 docker-push:
 	docker push $(DOCKER_TARGET_IMAGE)
