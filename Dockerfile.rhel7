@@ -6,6 +6,7 @@ ARG NPM_TOKEN
 ARG NPM_REGISTRY
 
 ENV NODE_ENV=production
+# This is required to build in isolated mitm environments
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 WORKDIR /opt/dialog-grpc-gateway
 
@@ -16,6 +17,7 @@ RUN mv node/node*/* node/
 
 ENV PATH="/opt/dialog-grpc-gateway/node/bin:${PATH}"
 
+# This is required to build in isolated mitm environments
 RUN npm config set strict-ssl false && \
     npm config set $NPM_REGISTRY/:_authToken $NPM_TOKEN && \
     npm install
