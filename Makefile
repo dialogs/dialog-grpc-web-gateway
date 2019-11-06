@@ -1,8 +1,8 @@
 GIT_PROJECT ?= $(shell GIT_PROJECT=$$(git remote get-url origin); GIT_PROJECT=$${GIT_PROJECT%/*}; GIT_PROJECT=$${GIT_PROJECT\#\#*/};echo $$GIT_PROJECT)
 GIT_REPO_NAME ?= $(shell XX=$$(git remote get-url origin); XX=$${XX\#\#*/};echo $${XX%%.git*})
 TARGET_PLATFORM ?= rhel7
-DOCKER_TARGET_REGISTRY ?= harbor.transmit.im/oak/
-DOCKER_SOURCE_REGISTRY ?= harbor.transmit.im/dockers/
+DOCKER_TARGET_REGISTRY ?= ""
+DOCKER_SOURCE_REGISTRY ?= registry.access.redhat.com/ubi7/
 BUILD_NUMBER ?= 1
 GIT_LAST_COMMIT_ID ?= $(shell git rev-parse --short HEAD)
 GIT_CURRENT_BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
