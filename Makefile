@@ -16,13 +16,6 @@ NODEJS_SOURCE ?= https://nodejs.org/dist/v12.13.0/node-v12.13.0-linux-x64.tar.gz
 
 NODEJS_SOURCE_FILE ?= $(lastword $(subst /, ,$(NODEJS_SOURCE)))
 
-NODE_TLS_REJECT_UNAUTHORIZED ?= 1
-ifeq (1,$(NODE_TLS_REJECT_UNAUTHORIZED))
-  NODE_STRICT_SSL = true
-else
-  NODE_STRICT_SSL = false
-endif
-
 .PHONY: test docker-build all clean build docker-clean help $(DOCKER_BUILD_WORKSPACE_DIR)-clean docker-push
 
 all: docker-build
@@ -49,7 +42,7 @@ build/$(NODEJS_SOURCE_FILE):
 docker-build: build
 ifeq "$(shell docker images -q $(DOCKER_TARGET_IMAGE))" ""
 	@echo \*\*\* [$@] Compiling code and building docker image
-	docker build -f Dockerfile.$(TARGET_PLATFORM) -t $(DOCKER_TARGET_IMAGE) --build-arg NODE_TLS_REJECT_UNAUTHORIZED=$(NODE_TLS_REJECT_UNAUTHORIZED) "$(DOCKER_BUILD_WORKSPACE_DIR)"
+	docker build -f Dockerfile.$(TARGET_PLATFORM) -t $(DOCKER_TARGET_IMAGE) --build-arg DOCKER_SOURCE_REGISTRY=$(DOCKER_SOURCE_REGISTRY) "$(DOCKER_BUILD_WORKSPACE_DIR)"
 	@echo \*\*\* [$@] Docker image $(DOCKER_TARGET_IMAGE) built successfully
 else
 	@echo \*\*\* [$@] Docker image $(DOCKER_TARGET_IMAGE) is already built. Run "make docker-clean" to wipe it
