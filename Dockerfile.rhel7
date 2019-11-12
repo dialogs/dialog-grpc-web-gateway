@@ -1,0 +1,31 @@
+ARG DOCKER_SOURCE_REGISTRY=registry.access.redhat.com/ubi7/
+
+FROM ${DOCKER_SOURCE_REGISTRY}ubi-minimal
+
+ARG NPM_TOKEN
+ARG NPM_REGISTRY
+ARG NODE_TLS_REJECT_UNAUTHORIZED
+ARG NODE_STRICT_SSL
+
+
+ENV NODE_ENV=production
+# This is required to build in isolated mitm environments
+WORKDIR /opt/dialog-grpc-gateway
+
+COPY src/ src/
+COPY package.json package.json
+ADD build/* node/
+RUN mv node/node*/* node/
+
+ENV PATH="/opt/dialog-grpc-gateway/node/bin:${PATH}"
+
+# This is required to build in isolated mitm environments
+RUN npm config set strict-ssl ${NODE_STRICT_SSL} && \
+    npm config set $NPM_REGISTRY/:_authToken $NPM_TOKEN && \
+    npm install
+    
+RUN chmod 777 node_modules/@dlghq/dialog-api/js/api.proto
+
+USER 1001
+
+ENTRYPOINT ["/opt/dialog-grpc-gateway/node/bin/node", "src/index.js"]
