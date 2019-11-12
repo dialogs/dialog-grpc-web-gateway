@@ -34,7 +34,7 @@ services:
             - path: /
               host: ${project.endpoints.websocket}
               options:
-                ssl_verify_client: true
+                ssl_verify_client: ${project.router.mutual-tls.enabled}
                 websocket: true
                 cors: true
                 cors_origin: https://${project.endpoints.web-app}

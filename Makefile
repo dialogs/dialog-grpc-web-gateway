@@ -1,7 +1,7 @@
-GIT_PROJECT ?= $(shell GIT_PROJECT=$$(git remote get-url origin); GIT_PROJECT=$${GIT_PROJECT%/*}; GIT_PROJECT=$${GIT_PROJECT\#\#*/};echo $$GIT_PROJECT)
+GIT_PROJECT ?= $(shell GIT_PROJECT=$$(git remote get-url origin); GIT_PROJECT=$${GIT_PROJECT%/*}; GIT_PROJECT=$${GIT_PROJECT\#\#*/};GIT_PROJECT=$${GIT_PROJECT\#\#*:};echo $$GIT_PROJECT)
 GIT_REPO_NAME ?= $(shell XX=$$(git remote get-url origin); XX=$${XX\#\#*/};echo $${XX%%.git*})
 TARGET_PLATFORM ?= rhel7
-DOCKER_TARGET_REGISTRY ?= ""
+DOCKER_TARGET_REGISTRY ?=
 DOCKER_SOURCE_REGISTRY ?= registry.access.redhat.com/ubi7/
 BUILD_NUMBER ?= 1
 GIT_LAST_COMMIT_ID ?= $(shell git rev-parse --short HEAD)
@@ -15,6 +15,13 @@ DOCKER_BUILD_WORKSPACE_DIR ?= $(shell realpath "$(shell git rev-parse --show-top
 NODEJS_SOURCE ?= https://nodejs.org/dist/v12.13.0/node-v12.13.0-linux-x64.tar.gz
 
 NODEJS_SOURCE_FILE ?= $(lastword $(subst /, ,$(NODEJS_SOURCE)))
+
+NODE_TLS_REJECT_UNAUTHORIZED ?= 1
+ifeq (1,$(NODE_TLS_REJECT_UNAUTHORIZED))
+  NODE_STRICT_SSL = true
+else
+  NODE_STRICT_SSL = false
+endif
 
 .PHONY: test docker-build all clean build docker-clean help $(DOCKER_BUILD_WORKSPACE_DIR)-clean docker-push
 
@@ -42,7 +49,7 @@ build/$(NODEJS_SOURCE_FILE):
 docker-build: build
 ifeq "$(shell docker images -q $(DOCKER_TARGET_IMAGE))" ""
 	@echo \*\*\* [$@] Compiling code and building docker image
-	docker build -f Dockerfile.$(TARGET_PLATFORM) -t $(DOCKER_TARGET_IMAGE) "$(DOCKER_BUILD_WORKSPACE_DIR)"
+	docker build -f Dockerfile.$(TARGET_PLATFORM) -t $(DOCKER_TARGET_IMAGE) --build-arg NODE_TLS_REJECT_UNAUTHORIZED=$(NODE_TLS_REJECT_UNAUTHORIZED) "$(DOCKER_BUILD_WORKSPACE_DIR)"
 	@echo \*\*\* [$@] Docker image $(DOCKER_TARGET_IMAGE) built successfully
 else
 	@echo \*\*\* [$@] Docker image $(DOCKER_TARGET_IMAGE) is already built. Run "make docker-clean" to wipe it
