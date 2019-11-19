@@ -83,7 +83,8 @@ createGrpcGateway({
     origin: config.origin.length ? config.origin : true
   },
   protoFiles: [
-    path.resolve(__dirname, "../node_modules/@dlghq/dialog-api/js/api.proto")
+    path.resolve(__dirname, "../node_modules/@dlghq/dialog-api/js/api.proto"),
+    path.resolve(__dirname, "../node_modules/@dlghq/server-api-calls-sdk/server.proto")
     // path.resolve(
     //   __dirname,
     //   "../node_modules/@dlghq/grpc-web-gateway/example/proto/api.proto"
