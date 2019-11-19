@@ -9,6 +9,7 @@ COPY src/ src/
 COPY package.json package.json
 
 RUN env
+RUN echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
 RUN npm install
 
 ENTRYPOINT ["node", "src/index.js"]
