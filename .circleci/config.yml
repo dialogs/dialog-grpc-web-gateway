@@ -1,4 +1,8 @@
 version: 2
+defaults_run: &defaults_run
+  name: run defaults
+  command: |
+    echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > ~/.npmrc
 jobs:
   build:
     docker:
@@ -8,6 +12,8 @@ jobs:
       # DOCKER_IMAGE: quay.io/dlgim/dialog-grpc-web-gateway
     steps:
       - checkout
+      - run:
+          <<: *defaults_run
       - run: npm ci
       - setup_remote_docker
       - run: docker build -t $DOCKER_IMAGE .
