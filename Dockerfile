@@ -8,6 +8,7 @@ WORKDIR /opt/dialog-grpc-gateway
 COPY src/ src/
 COPY package.json package.json
 
+RUN env
 RUN npm install
 
 ENTRYPOINT ["node", "src/index.js"]
