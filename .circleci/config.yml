@@ -13,8 +13,6 @@ jobs:
     steps:
       - checkout
       - run:
-          env
-      - run:
           <<: *defaults_run
       - run: npm ci
       - setup_remote_docker
