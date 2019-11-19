@@ -18,7 +18,7 @@ jobs:
           <<: *defaults_run
       - run: npm ci
       - setup_remote_docker
-      - run: docker build -e NPM_TOKEN=${NPM_AUTH_TOKEN} -t $DOCKER_IMAGE .
+      - run: docker build --build-arg NPM_TOKEN=${NPM_AUTH_TOKEN} -t $DOCKER_IMAGE .
       - run: docker tag $DOCKER_IMAGE $DOCKER_IMAGE:latest
       - run: docker tag $DOCKER_IMAGE $DOCKER_IMAGE:"$(node -p "require('./package.json').version").$CIRCLE_BUILD_NUM"
       - run: echo $GITHUB_PACKAGES_TOKEN | docker login -u $GITHUB_BOT_USERNAME --password-stdin docker.pkg.github.com
