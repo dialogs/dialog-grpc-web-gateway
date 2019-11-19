@@ -9,6 +9,7 @@ jobs:
       - image: circleci/node:lts
     environment:
       DOCKER_IMAGE: docker.pkg.github.com/dialogs/dialog-grpc-web-gateway/dialog-grpc-web-gateway
+      NPM_TOKEN: $NPM_AUTH_TOKEN
       # DOCKER_IMAGE: quay.io/dlgim/dialog-grpc-web-gateway
     steps:
       - checkout
