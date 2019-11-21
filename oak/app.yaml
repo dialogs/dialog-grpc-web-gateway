@@ -1,0 +1,44 @@
+services:
+  this:
+    deploy:
+      strategy:
+        type: Rolling
+      envs:
+        API_HOST: ${this.egress.plat-auth-service.grpc-api.host}:${this.egress.plat-auth-service.grpc-api.port}
+        PORT: ${this.ingress.http-api.port}
+        CORS_ORIGIN: 'true'
+# This sets max old space size to "total limit in bytes / 1024 * 1024 * 100 * 75" = 75% of available memory
+      shell: >-
+        MEM=$(( $(cat /sys/fs/cgroup/memory/memory.limit_in_bytes) / 104857600 * 75 ));
+        exec ./node/bin/node --max-old-space-size=$MEM src/index.js
+      resources:
+        minimal:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 250m
+            memory: 64Mi
+        normal:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 1
+            memory: 512Mi
+    ingress:
+      http-api:
+        port: 3000
+        controllers:
+          router:
+            - path: /
+              host: ${project.endpoints.websocket}
+              options:
+                ssl_verify_client: ${project.router.mutual-tls.enabled}
+                websocket: true
+                cors: true
+                cors_origin: https://${project.endpoints.web-app}
+                redirect_to: /
+                proxy_buffering: off
+    egress:
+      plat-auth-service:
